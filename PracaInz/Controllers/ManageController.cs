@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PracaInz.Models;
-using PracaInz.Models.ManageViewModels;
+using PracaInz.Models.ViewModels.ManageViewModels;
 using PracaInz.Services;
 using System;
 using System.Linq;

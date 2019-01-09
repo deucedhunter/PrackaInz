@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PracaInz.Data;
 using PracaInz.Models;
-using PracaInz.Models.AccountViewModels;
+using PracaInz.Models.ViewModels.AccountViewModels;
 using PracaInz.Services;
 using System;
 using System.Security.Claims;

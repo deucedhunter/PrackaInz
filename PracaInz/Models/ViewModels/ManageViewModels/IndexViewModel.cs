@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PracaInz.Models.ManageViewModels
+namespace PracaInz.Models.ViewModels.ManageViewModels
 {
     public class IndexViewModel
     {

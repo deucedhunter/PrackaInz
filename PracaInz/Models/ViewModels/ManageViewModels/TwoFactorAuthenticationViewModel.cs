@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PracaInz.Models.ManageViewModels
+﻿namespace PracaInz.Models.ViewModels.ManageViewModels
 {
     public class TwoFactorAuthenticationViewModel
     {

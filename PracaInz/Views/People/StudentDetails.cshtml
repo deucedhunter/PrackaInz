@@ -1,0 +1,76 @@
+﻿@model StudentClassVM
+
+@{
+    ViewData["Title"] = "Szczegóły";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h4>Osoba</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Person.FirstMidName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Student.Person.FirstMidName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Person.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Student.Person.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Person.BirthDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Student.Person.BirthDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Person.Pesel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Student.Person.Pesel)
+        </dd>
+        <dt>
+            Rola
+        </dt>
+        <dd>
+            <text>Uczeń</text>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Class.FullName)
+        </dt>
+        <dd>
+
+            @if (Model.Student.ClassID != null)
+            {
+                @Html.DisplayFor(model => model.Student.Class.FullName)
+            }
+            else
+            {
+                <text>Nie przypisany</text>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Student.Person.Id">Edytuj</a> |
+    <a asp-action="Index">Wróć do listy</a>
+</div>
+
+<div>
+    <form asp-action="AssignStudentToClass" method="post" asp-route-id="@Model.Student.Person.Id">
+        <div class="form-group">
+            <label class="control-label" asp-for="Student.Class.Name"></label>
+            @Html.DropDownListFor(x => x.Student.ClassID,
+                new SelectList(Model.Classes, "ClassID", "FullName"), new { @class = "form-control" }
+                )
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Zapisz" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

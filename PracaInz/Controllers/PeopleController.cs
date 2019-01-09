@@ -55,11 +55,24 @@ namespace PracaInz.Controllers
                 .Include(p => p.Employee)
                 .Include(p => p.Student)
                 .SingleOrDefaultAsync(m => m.Id == id);
+
+            var student = await _context.Students.Include(s => s.Class).SingleOrDefaultAsync(s => s.Person.Id == id);
+            var pperson = await _context.People.Include(p => p.Student).ThenInclude(s => s.Class).SingleOrDefaultAsync(p => p.Id == id);
+
             if (person == null)
             {
                 return NotFound();
             }
 
+            if (person.StudentID != null)
+            {
+                var vm = new StudentClassVM
+                {
+                    Student = await _context.Students.Include(s => s.Class).SingleOrDefaultAsync(s => s.StudentID == person.StudentID),
+                    Classes = await _context.Classes.ToListAsync()
+                };
+                return View("StudentDetails", vm);
+            }
             return View(person);
         }
 
@@ -243,6 +256,22 @@ namespace PracaInz.Controllers
         private bool PersonExists(int id)
         {
             return _context.People.Any(e => e.Id == id);
+        }
+
+        public IActionResult AssignStudentToClass(StudentClassVM studentVM, int? id)
+        {
+
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var student = _context.Students.Single(s => s.Person.Id == id);
+            student.ClassID = studentVM.Student.ClassID;
+
+            _context.Students.Update(student);
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = id });
         }
     }
 }
