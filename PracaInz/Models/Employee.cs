@@ -11,6 +11,9 @@ namespace PracaInz.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime HireDate { get; set; }
 
+        [Display(Name = "Nauczyciel?")]
+        public bool isTeacher { get; set; }
+
         public virtual Person Person { get; set; }
 
 

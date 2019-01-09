@@ -14,6 +14,7 @@ namespace PracaInz.Data
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Person> People { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -22,6 +23,7 @@ namespace PracaInz.Data
 
             builder.Entity<Student>().ToTable("Student");
             builder.Entity<Employee>().ToTable("Employee");
+            builder.Entity<Person>().ToTable("Person");
 
             builder.Entity<ApplicationUser>()
                 .HasOne(p => p.Person)
@@ -37,6 +39,7 @@ namespace PracaInz.Data
                 .HasOne(s => s.Person)
                 .WithOne(p => p.Employee)
                 .IsRequired(false);
+
         }
     }
 }

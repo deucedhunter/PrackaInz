@@ -1,0 +1,66 @@
+﻿@model PracaInz.Models.Person
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Person</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstMidName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstMidName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pesel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pesel)
+        </dd>
+        <dt>
+            Rola
+        </dt>
+        <dd>
+            @if (Model.Employee != null)
+            {
+                if (Model.Employee.isTeacher)
+                {
+                    <text>Nauczyciel</text>
+                }
+                else
+                {
+                    <text>Sekretariat</text>
+                }
+            }
+            else if (Model.Student != null)
+            {
+                <text>Uczeń</text>
+            }
+            else
+            {
+                <text>Nieprzypisany</text>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a> |
+    <a asp-action="Index">Wróć do listy</a>
+</div>

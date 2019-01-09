@@ -1,0 +1,71 @@
+﻿@model PracaInz.Models.Person
+
+@{
+    ViewData["Title"] = "Usuń";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Czy chcesz usunąć tę osobę?</h3>
+<div>
+    <h4>Osoba</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstMidName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstMidName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pesel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pesel)
+        </dd>
+        <dt>
+            Rola
+        </dt>
+        <dd>
+            @if (Model.Employee != null)
+            {
+                if (Model.Employee.isTeacher)
+                {
+                    <text>Nauczyciel</text>
+                }
+                else
+                {
+                    <text>Sekretariat</text>
+                }
+            }
+            else if (Model.Student != null)
+            {
+                <text>Uczeń</text>
+            }
+            else
+            {
+                <text>Nieprzypisany</text>
+            }
+            </dt>
+        <dd>
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Usuń" class="btn btn-primary" /> |
+        <a asp-action="Index">Wróć do listy</a>
+    </form>
+</div>
