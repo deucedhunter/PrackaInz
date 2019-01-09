@@ -13,8 +13,8 @@
             <ul class="nav navbar-nav">
                 <li><a asp-area="" asp-controller="Home" asp-action="Index">Strona Główna</a></li>
                 <li><a asp-area="" asp-controller="People" asp-action="Index">Osoby</a></li>
-                <li><a asp-area="" asp-controller="People" asp-action="Index">Uczniowie</a></li>
-                <li><a asp-area="" asp-controller="People" asp-action="Index">Pracownicy</a></li>
+                <li><a asp-area="" asp-controller="People" asp-route-role="Student" asp-action="Index">Uczniowie</a></li>
+                <li><a asp-area="" asp-controller="People" asp-route-role="Employee" asp-action="Index">Pracownicy</a></li>
             </ul>
             @await Html.PartialAsync("_LoginPartial")
         </div>

@@ -21,10 +21,25 @@ namespace PracaInz.Controllers
         }
 
         // GET: People
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string role = null)
         {
-            var applicationDbContext = _context.People.Include(p => p.ApplicationUser).Include(p => p.Employee).Include(p => p.Student);
-            return View(await applicationDbContext.ToListAsync());
+
+            if (role == "Student")
+            {
+                return View(await _context.People
+                    .Include(p => p.ApplicationUser)
+                    .Include(p => p.Student).Where(p => p.StudentID != null).ToListAsync());
+            }
+            else if (role == "Employee")
+            {
+                return View(await _context.People
+                    .Include(p => p.ApplicationUser)
+                    .Include(p => p.Employee).Where(p => p.EmployeeID != null).ToListAsync());
+            }
+            return View(await _context.People
+                .Include(p => p.ApplicationUser)
+                .Include(p => p.Employee)
+                .Include(p => p.Student).ToListAsync());
         }
 
         // GET: People/Details/5

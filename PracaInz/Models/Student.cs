@@ -13,8 +13,8 @@ namespace PracaInz.Models
         public virtual Person Person { get; set; }
 
 
-        //public int? ClassID { get; set; }
-        //public virtual Class Class { get; set; }
+        public int? ClassID { get; set; }
+        public virtual Class Class { get; set; }
 
 
         //public IEnumerable<Presence> Presence { get; set; }
