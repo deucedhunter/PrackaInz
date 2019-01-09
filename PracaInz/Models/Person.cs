@@ -1,25 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PracaInz.Models.AccountViewModels
+namespace PracaInz.Models
 {
-    public class RegisterViewModel
+    public class Person
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Hasło")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Potwierdź hasło")]
-        [Compare("Password", ErrorMessage = "Hasła są różne.")]
-        public string ConfirmPassword { get; set; }
+        public int Id { get; set; }
 
 
         [Required, StringLength(60), Display(Name = "Imiona")]
@@ -43,5 +30,16 @@ namespace PracaInz.Models.AccountViewModels
                 return FirstMidName + " " + LastName;
             }
         }
+
+        public int ApplicationUserID { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
+        public int? StudentID { get; set; }
+        public virtual Student Student { get; set; }
+
+
+
+        public int? EmployeeID { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

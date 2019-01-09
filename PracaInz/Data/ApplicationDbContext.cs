@@ -1,26 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PracaInz.Models;
 
 namespace PracaInz.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+
+            builder.Entity<Student>().ToTable("Student");
+            builder.Entity<Employee>().ToTable("Employee");
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(p => p.Person)
+                .WithOne(s => s.ApplicationUser)
+                .IsRequired();
+
+            builder.Entity<Student>()
+                .HasOne(s => s.Person)
+                .WithOne(p => p.Student)
+                .IsRequired(false);
+
+            builder.Entity<Employee>()
+                .HasOne(s => s.Person)
+                .WithOne(p => p.Employee)
+                .IsRequired(false);
         }
     }
 }

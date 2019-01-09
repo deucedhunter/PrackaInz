@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PracaInz.Models.ManageViewModels
 {
@@ -17,7 +13,7 @@ namespace PracaInz.Models.ManageViewModels
         public string Email { get; set; }
 
         [Phone]
-        [Display(Name = "Phone number")]
+        [Display(Name = "Telefon")]
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }
