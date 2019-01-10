@@ -18,6 +18,9 @@ namespace PracaInz.Data
         public DbSet<Class> Classes { get; set; }
         public DbSet<Course> Coursees { get; set; }
         public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Presence> Presence { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -30,6 +33,9 @@ namespace PracaInz.Data
             builder.Entity<Class>().ToTable("Class");
             builder.Entity<Course>().ToTable("Course");
             builder.Entity<Subject>().ToTable("Subject");
+            builder.Entity<Enrollment>().ToTable("Enrollment");
+            builder.Entity<Grade>().ToTable("Grade");
+            builder.Entity<Presence>().ToTable("Presence");
 
             builder.Entity<ApplicationUser>()
                 .HasOne(p => p.Person)
@@ -53,6 +59,5 @@ namespace PracaInz.Data
         }
 
 
-        public DbSet<PracaInz.Models.Enrollment> Enrollment { get; set; }
     }
 }

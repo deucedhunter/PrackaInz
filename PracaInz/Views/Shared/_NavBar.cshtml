@@ -11,7 +11,6 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Strona Główna</a></li>
                 <li><a asp-area="" asp-controller="People" asp-action="Index">Osoby</a></li>
                 <li><a asp-area="" asp-controller="People" asp-route-role="Student" asp-action="Index">Uczniowie</a></li>
                 <li><a asp-area="" asp-controller="People" asp-route-role="Employee" asp-action="Index">Pracownicy</a></li>
@@ -19,6 +18,8 @@
                 <li><a asp-area="" asp-controller="Subjects" asp-action="Index">Przedmioty</a></li>
                 <li><a asp-area="" asp-controller="Courses" asp-action="Index">Kursy</a></li>
                 <li><a asp-area="" asp-controller="Enrollments" asp-action="Index">Zapisy</a></li>
+                <li><a asp-area="" asp-controller="Grades" asp-action="Index">Oceny</a></li>
+                <li><a asp-area="" asp-controller="Presences" asp-action="Index">Obecności</a></li>
             </ul>
             @await Html.PartialAsync("_LoginPartial")
         </div>

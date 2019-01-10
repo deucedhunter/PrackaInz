@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PracaInz.Data;
 using PracaInz.Models;
 using PracaInz.Services;
+using System.Globalization;
 
 namespace PracaInz
 {
@@ -59,6 +60,10 @@ namespace PracaInz
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            var cultureInfo = new CultureInfo("en-US");
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
     }
 }

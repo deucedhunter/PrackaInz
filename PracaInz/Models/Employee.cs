@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PracaInz.Models
@@ -19,7 +20,7 @@ namespace PracaInz.Models
 
         public Course Course { get; set; }
 
-        //public IEnumerable<Presence> Presence { get; set; }
-        //public IEnumerable<Grade> Grades { get; set; }
+        public IEnumerable<Presence> Presence { get; set; }
+        public IEnumerable<Grade> Grades { get; set; }
     }
 }

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<PracaInz.Models.Presence>
+
+@{
+    ViewData["Title"] = "Lista";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create">Utwórz</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Godzina)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPresent)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Person.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Godzina)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsPresent)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PresenceID">Edytuj</a> |
+                    <a asp-action="Details" asp-route-id="@item.PresenceID">Szczegóły</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PresenceID">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

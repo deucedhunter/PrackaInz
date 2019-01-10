@@ -1,0 +1,51 @@
+﻿@model PracaInz.Models.Presence
+
+@{
+    ViewData["Title"] = "Usuń";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Czy jesteś pewien, że chcesz usunąć obecność?</h3>
+<div>
+    <h4>Obecność</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Student.Person.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Data)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Data)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Godzina)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Godzina)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPresent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPresent)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PresenceID" />
+        <input type="submit" value="Usuń" class="btn btn-primary" /> |
+        <a asp-action="Index">Wróć do listy</a>
+    </form>
+</div>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PracaInz.Models
 {
@@ -17,7 +18,7 @@ namespace PracaInz.Models
         public virtual Class Class { get; set; }
 
 
-        //public IEnumerable<Presence> Presence { get; set; }
-        //public IEnumerable<Grade> Grades { get; set; }
+        public IEnumerable<Presence> Presence { get; set; }
+        public IEnumerable<Grade> Grades { get; set; }
     }
 }
