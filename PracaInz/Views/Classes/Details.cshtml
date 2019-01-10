@@ -5,26 +5,53 @@
 }
 
 <h2>@ViewData["Title"]</h2>
+<h4>Klasa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
 
-<div>
-    <h4>Klasa</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Year)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ClassID">Edytuj</a> |
-    <a asp-action="Index">Wróć do listy</a>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Year)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Year)
+            </dd>
+            <dt>
+                Liczba uczniów
+            </dt>
+            <dd>
+                @Model.Students.Count()
+            </dd>
+        </dl>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.ClassID">Edytuj</a> |
+            <a asp-action="Index">Wróć do listy</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Students)</th>
+                    <th>Akcja</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Students)
+                {
+                    <tr>
+                        <td><a asp-controller="People" asp-action="Details" asp-route-id="@item.Person.Id">@item.Person.FullName</a></td>
+                        <td><a asp-action="UnsignStudent" asp-route-id="@item.Person.Id"><i class="fas fa-user-slash" style="color: red;"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

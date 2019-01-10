@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PracaInz.Data;
 using PracaInz.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PracaInz.Controllers
 {
@@ -34,6 +31,8 @@ namespace PracaInz.Controllers
             }
 
             var @class = await _context.Classes
+                .Include(c => c.Students)
+                    .ThenInclude(s => s.Person)
                 .SingleOrDefaultAsync(m => m.ClassID == id);
             if (@class == null)
             {
@@ -148,6 +147,20 @@ namespace PracaInz.Controllers
         private bool ClassExists(int id)
         {
             return _context.Classes.Any(e => e.ClassID == id);
+        }
+
+        public async Task<IActionResult> UnsignStudent(int id)
+        {
+
+            var student = await _context.Students.SingleOrDefaultAsync(s => s.Person.Id == id);
+
+            student.ClassID = null;
+
+            _context.Update(student);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }
