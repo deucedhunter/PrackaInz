@@ -1,0 +1,45 @@
+﻿@model PracaInz.Models.Enrollment
+
+@{
+    ViewData["Title"] = "Usuń";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Czy jesteś pewny, że chcesz usunąć zapis?</h3>
+<div>
+    <h4>Zapis</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Class)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Class.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ShortDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LongDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LongDescription)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="EnrollmentID" />
+        <input type="submit" value="Usuń" class="btn btn-primary" /> |
+        <a asp-action="Index">Wróć do listy</a>
+    </form>
+</div>

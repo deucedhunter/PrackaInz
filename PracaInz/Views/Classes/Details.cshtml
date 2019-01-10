@@ -53,5 +53,25 @@
                 }
             </tbody>
         </table>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Enrollments)</th>
+                    <th>Akcja</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Enrollments)
+                {
+                    <tr>
+                        <td><a asp-controller="Courses" asp-action="Details" asp-route-id="@item.CourseID">@item.Course.FullName</a></td>
+                        <td><a asp-controller="Enrollments" asp-action="Delete" asp-route-id="@item.EnrollmentID"><i class="fas fa-user-slash" style="color: red;"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
     </div>
 </div>

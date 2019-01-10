@@ -11,9 +11,10 @@ using System;
 namespace PracaInz.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190110101818_addCourseAndSubject")]
+    partial class addCourseAndSubject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,31 +229,6 @@ namespace PracaInz.Migrations
                     b.ToTable("Employee");
                 });
 
-            modelBuilder.Entity("PracaInz.Models.Enrollment", b =>
-                {
-                    b.Property<int>("EnrollmentID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ClassID");
-
-                    b.Property<int>("CourseID");
-
-                    b.Property<string>("LongDescription")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("ShortDescription")
-                        .HasMaxLength(100);
-
-                    b.HasKey("EnrollmentID");
-
-                    b.HasIndex("ClassID");
-
-                    b.HasIndex("CourseID")
-                        .IsUnique();
-
-                    b.ToTable("Enrollment");
-                });
-
             modelBuilder.Entity("PracaInz.Models.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -378,19 +354,6 @@ namespace PracaInz.Migrations
                     b.HasOne("PracaInz.Models.Subject", "Subject")
                         .WithMany("Courses")
                         .HasForeignKey("SubjectID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("PracaInz.Models.Enrollment", b =>
-                {
-                    b.HasOne("PracaInz.Models.Class", "Class")
-                        .WithMany("Enrollments")
-                        .HasForeignKey("ClassID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("PracaInz.Models.Course", "Course")
-                        .WithOne("Enrollment")
-                        .HasForeignKey("PracaInz.Models.Enrollment", "CourseID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

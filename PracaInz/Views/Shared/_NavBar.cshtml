@@ -16,6 +16,9 @@
                 <li><a asp-area="" asp-controller="People" asp-route-role="Student" asp-action="Index">Uczniowie</a></li>
                 <li><a asp-area="" asp-controller="People" asp-route-role="Employee" asp-action="Index">Pracownicy</a></li>
                 <li><a asp-area="" asp-controller="Classes" asp-action="Index">Klasy</a></li>
+                <li><a asp-area="" asp-controller="Subjects" asp-action="Index">Przedmioty</a></li>
+                <li><a asp-area="" asp-controller="Courses" asp-action="Index">Kursy</a></li>
+                <li><a asp-area="" asp-controller="Enrollments" asp-action="Index">Zapisy</a></li>
             </ul>
             @await Html.PartialAsync("_LoginPartial")
         </div>

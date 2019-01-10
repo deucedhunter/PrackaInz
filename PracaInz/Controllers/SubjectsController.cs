@@ -1,28 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PracaInz.Data;
 using PracaInz.Models;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PracaInz.Controllers
 {
-    public class ClassesController : Controller
+    public class SubjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ClassesController(ApplicationDbContext context)
+        public SubjectsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Classes
+        // GET: Subjects
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Classes.ToListAsync());
+            return View(await _context.Subjects.ToListAsync());
         }
 
-        // GET: Classes/Details/5
+        // GET: Subjects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,43 +33,39 @@ namespace PracaInz.Controllers
                 return NotFound();
             }
 
-            var @class = await _context.Classes
-                .Include(c => c.Students)
-                    .ThenInclude(s => s.Person)
-                .Include(c => c.Enrollments)
-                    .ThenInclude(e => e.Course)
-                .SingleOrDefaultAsync(m => m.ClassID == id);
-            if (@class == null)
+            var subject = await _context.Subjects
+                .SingleOrDefaultAsync(m => m.SubjectID == id);
+            if (subject == null)
             {
                 return NotFound();
             }
 
-            return View(@class);
+            return View(subject);
         }
 
-        // GET: Classes/Create
+        // GET: Subjects/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Classes/Create
+        // POST: Subjects/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassID,Name,Year")] Class @class)
+        public async Task<IActionResult> Create([Bind("SubjectID,Name,IsImportant")] Subject subject)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@class);
+                _context.Add(subject);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(@class);
+            return View(subject);
         }
 
-        // GET: Classes/Edit/5
+        // GET: Subjects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +73,22 @@ namespace PracaInz.Controllers
                 return NotFound();
             }
 
-            var @class = await _context.Classes.SingleOrDefaultAsync(m => m.ClassID == id);
-            if (@class == null)
+            var subject = await _context.Subjects.SingleOrDefaultAsync(m => m.SubjectID == id);
+            if (subject == null)
             {
                 return NotFound();
             }
-            return View(@class);
+            return View(subject);
         }
 
-        // POST: Classes/Edit/5
+        // POST: Subjects/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClassID,Name,Year")] Class @class)
+        public async Task<IActionResult> Edit(int id, [Bind("SubjectID,Name,IsImportant")] Subject subject)
         {
-            if (id != @class.ClassID)
+            if (id != subject.SubjectID)
             {
                 return NotFound();
             }
@@ -98,12 +97,12 @@ namespace PracaInz.Controllers
             {
                 try
                 {
-                    _context.Update(@class);
+                    _context.Update(subject);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClassExists(@class.ClassID))
+                    if (!SubjectExists(subject.SubjectID))
                     {
                         return NotFound();
                     }
@@ -114,10 +113,10 @@ namespace PracaInz.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@class);
+            return View(subject);
         }
 
-        // GET: Classes/Delete/5
+        // GET: Subjects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,44 +124,30 @@ namespace PracaInz.Controllers
                 return NotFound();
             }
 
-            var @class = await _context.Classes
-                .SingleOrDefaultAsync(m => m.ClassID == id);
-            if (@class == null)
+            var subject = await _context.Subjects
+                .SingleOrDefaultAsync(m => m.SubjectID == id);
+            if (subject == null)
             {
                 return NotFound();
             }
 
-            return View(@class);
+            return View(subject);
         }
 
-        // POST: Classes/Delete/5
+        // POST: Subjects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @class = await _context.Classes.SingleOrDefaultAsync(m => m.ClassID == id);
-            _context.Classes.Remove(@class);
+            var subject = await _context.Subjects.SingleOrDefaultAsync(m => m.SubjectID == id);
+            _context.Subjects.Remove(subject);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClassExists(int id)
+        private bool SubjectExists(int id)
         {
-            return _context.Classes.Any(e => e.ClassID == id);
-        }
-
-        public async Task<IActionResult> UnsignStudent(int id)
-        {
-
-            var student = await _context.Students.SingleOrDefaultAsync(s => s.Person.Id == id);
-
-            student.ClassID = null;
-
-            _context.Update(student);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
+            return _context.Subjects.Any(e => e.SubjectID == id);
         }
     }
 }

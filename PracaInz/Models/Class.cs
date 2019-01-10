@@ -15,7 +15,7 @@ namespace PracaInz.Models
         public int Year { get; set; }
 
         public IEnumerable<Student> Students { get; set; }
-
+        public IEnumerable<Enrollment> Enrollments { get; set; }
 
         [Display(Name = "Nazwa")]
         public string FullName
