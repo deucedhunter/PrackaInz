@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PracaInz.Migrations
 {
-    public partial class OneForAll : Migration
+    public partial class InitialMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -366,7 +366,7 @@ namespace PracaInz.Migrations
                         column: x => x.CourseID,
                         principalTable: "Course",
                         principalColumn: "CourseID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Presence_Employee_EmployeeID",
                         column: x => x.EmployeeID,

@@ -22,15 +22,15 @@ namespace PracaInz.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Coursees
+            var applicationDbContext = await _context.Coursees
                 .Include(c => c.Enrollment)
                 .Include(c => c.Employee)
                     .ThenInclude(e => e.Person)
-                .Include(c => c.Subject);
+                .Include(c => c.Subject).ToListAsync();
 
 
 
-            return View(await applicationDbContext.ToListAsync());
+            return View(applicationDbContext);
         }
 
         // GET: Courses/Details/5

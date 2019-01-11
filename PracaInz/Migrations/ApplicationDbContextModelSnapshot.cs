@@ -422,8 +422,8 @@ namespace PracaInz.Migrations
             modelBuilder.Entity("PracaInz.Models.Course", b =>
                 {
                     b.HasOne("PracaInz.Models.Employee", "Employee")
-                        .WithOne("Course")
-                        .HasForeignKey("PracaInz.Models.Course", "EmployeeID")
+                        .WithMany("Courses")
+                        .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PracaInz.Models.Subject", "Subject")
@@ -480,7 +480,8 @@ namespace PracaInz.Migrations
                 {
                     b.HasOne("PracaInz.Models.Course", "Course")
                         .WithMany("Presence")
-                        .HasForeignKey("CourseID");
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PracaInz.Models.Employee", "Employee")
                         .WithMany("Presence")

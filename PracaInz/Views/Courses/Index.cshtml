@@ -41,7 +41,11 @@
                     <a asp-action="Edit" asp-route-id="@item.CourseID">Edytuj</a> |
                     <a asp-action="Details" asp-route-id="@item.CourseID">Szczegóły</a> |
 
-                    <a asp-action="CheckPresence" asp-route-ClassID="@item.Enrollment.ClassID" asp-route-CourseID="@item.CourseID">Obecność</a> |
+                    @if (item.Enrollment != null)
+                    {
+                        <a asp-action="CheckPresence" asp-route-ClassID="@item.Enrollment.ClassID" asp-route-CourseID="@item.CourseID">Obecność</a>
+                        <text>|</text>
+                    }
 
                     <a asp-action="Delete" asp-route-id="@item.CourseID">Usuń</a>
                 </td>

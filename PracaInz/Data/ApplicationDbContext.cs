@@ -47,20 +47,30 @@ namespace PracaInz.Data
                 .WithOne(p => p.Student)
                 .IsRequired(false);
 
-
-            builder.Entity<Course>()
-                .HasIndex(c => c.EmployeeID)
-                .IsUnique(false);
-
             builder.Entity<Employee>()
                 .HasOne(s => s.Person)
                 .WithOne(p => p.Employee)
                 .IsRequired(false);
 
-            builder.Entity<Employee>()
-                .HasOne(e => e.Course)
-                .WithOne(b => b.Employee)
-                .HasForeignKey<Course>(b => b.EmployeeID);
+
+            builder.Entity<Course>()
+                .HasIndex(c => c.EmployeeID)
+                .IsUnique(false);
+
+
+            //builder.Entity<Course>()
+            //    .HasOne(c => c.Employee)
+            //    .WithMany(e => e.Courses)
+            //    .HasForeignKey(c => c.CourseID);
+
+
+            builder.Entity<Presence>()
+                .HasOne(b => b.Course)
+                .WithMany(b => b.Presence)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+
         }
     }
 }

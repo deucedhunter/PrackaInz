@@ -18,8 +18,7 @@ namespace PracaInz.Models
         public virtual Person Person { get; set; }
 
 
-        public Course Course { get; set; }
-
+        public IEnumerable<Course> Courses { get; set; }
         public IEnumerable<Presence> Presence { get; set; }
         public IEnumerable<Grade> Grades { get; set; }
     }
