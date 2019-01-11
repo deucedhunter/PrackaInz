@@ -11,8 +11,8 @@ using System;
 namespace PracaInz.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190109121337_Initial")]
-    partial class Initial
+    [Migration("20190111153754_OneForAll")]
+    partial class OneForAll
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,6 +179,41 @@ namespace PracaInz.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("PracaInz.Models.Class", b =>
+                {
+                    b.Property<int>("ClassID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(5);
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("ClassID");
+
+                    b.ToTable("Class");
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Course", b =>
+                {
+                    b.Property<int>("CourseID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("EmployeeID");
+
+                    b.Property<string>("FullName");
+
+                    b.Property<int>("SubjectID");
+
+                    b.HasKey("CourseID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("SubjectID");
+
+                    b.ToTable("Course");
+                });
+
             modelBuilder.Entity("PracaInz.Models.Employee", b =>
                 {
                     b.Property<int>("EmployeeID")
@@ -186,9 +221,60 @@ namespace PracaInz.Migrations
 
                     b.Property<DateTime>("HireDate");
 
+                    b.Property<bool>("isTeacher");
+
                     b.HasKey("EmployeeID");
 
                     b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Enrollment", b =>
+                {
+                    b.Property<int>("EnrollmentID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClassID");
+
+                    b.Property<int>("CourseID");
+
+                    b.Property<string>("LongDescription")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("ShortDescription")
+                        .HasMaxLength(100);
+
+                    b.HasKey("EnrollmentID");
+
+                    b.HasIndex("ClassID");
+
+                    b.HasIndex("CourseID")
+                        .IsUnique();
+
+                    b.ToTable("Enrollment");
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Grade", b =>
+                {
+                    b.Property<int>("GradeID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CourseID");
+
+                    b.Property<int?>("EmployeerID");
+
+                    b.Property<int?>("StudentID");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("GradeID");
+
+                    b.HasIndex("CourseID");
+
+                    b.HasIndex("EmployeerID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("Grade");
                 });
 
             modelBuilder.Entity("PracaInz.Models.Person", b =>
@@ -231,16 +317,62 @@ namespace PracaInz.Migrations
                     b.ToTable("Person");
                 });
 
+            modelBuilder.Entity("PracaInz.Models.Presence", b =>
+                {
+                    b.Property<int>("PresenceID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CourseID");
+
+                    b.Property<DateTime>("Data");
+
+                    b.Property<int?>("EmployeeID");
+
+                    b.Property<DateTime>("Godzina");
+
+                    b.Property<bool>("IsPresent");
+
+                    b.Property<int>("StudentID");
+
+                    b.HasKey("PresenceID");
+
+                    b.HasIndex("CourseID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("StudentID");
+
+                    b.ToTable("Presence");
+                });
+
             modelBuilder.Entity("PracaInz.Models.Student", b =>
                 {
                     b.Property<int>("StudentID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("ClassID");
+
                     b.Property<string>("GudrdianPhoneNumber");
 
                     b.HasKey("StudentID");
 
+                    b.HasIndex("ClassID");
+
                     b.ToTable("Student");
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Subject", b =>
+                {
+                    b.Property<int>("SubjectID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsImportant");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("SubjectID");
+
+                    b.ToTable("Subject");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -288,6 +420,47 @@ namespace PracaInz.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("PracaInz.Models.Course", b =>
+                {
+                    b.HasOne("PracaInz.Models.Employee", "Employee")
+                        .WithOne("Course")
+                        .HasForeignKey("PracaInz.Models.Course", "EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PracaInz.Models.Subject", "Subject")
+                        .WithMany("Courses")
+                        .HasForeignKey("SubjectID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Enrollment", b =>
+                {
+                    b.HasOne("PracaInz.Models.Class", "Class")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("ClassID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PracaInz.Models.Course", "Course")
+                        .WithOne("Enrollment")
+                        .HasForeignKey("PracaInz.Models.Enrollment", "CourseID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Grade", b =>
+                {
+                    b.HasOne("PracaInz.Models.Course", "Course")
+                        .WithMany("Grades")
+                        .HasForeignKey("CourseID");
+
+                    b.HasOne("PracaInz.Models.Employee", "Employeer")
+                        .WithMany("Grades")
+                        .HasForeignKey("EmployeerID");
+
+                    b.HasOne("PracaInz.Models.Student", "Student")
+                        .WithMany("Grades")
+                        .HasForeignKey("StudentID");
+                });
+
             modelBuilder.Entity("PracaInz.Models.Person", b =>
                 {
                     b.HasOne("PracaInz.Models.ApplicationUser", "ApplicationUser")
@@ -302,6 +475,29 @@ namespace PracaInz.Migrations
                     b.HasOne("PracaInz.Models.Student", "Student")
                         .WithOne("Person")
                         .HasForeignKey("PracaInz.Models.Person", "StudentID");
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Presence", b =>
+                {
+                    b.HasOne("PracaInz.Models.Course", "Course")
+                        .WithMany("Presence")
+                        .HasForeignKey("CourseID");
+
+                    b.HasOne("PracaInz.Models.Employee", "Employee")
+                        .WithMany("Presence")
+                        .HasForeignKey("EmployeeID");
+
+                    b.HasOne("PracaInz.Models.Student", "Student")
+                        .WithMany("Presence")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Student", b =>
+                {
+                    b.HasOne("PracaInz.Models.Class", "Class")
+                        .WithMany("Students")
+                        .HasForeignKey("ClassID");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,6 +22,7 @@ namespace PracaInz.Controllers
         {
             var applicationDbContext = _context.Presence
                 .Include(p => p.Course)
+                    .ThenInclude(c => c.Enrollment)
                 .Include(p => p.Student)
                     .ThenInclude(s => s.Person);
             return View(await applicationDbContext.ToListAsync());

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PracaInz.Migrations
 {
-    public partial class Initial : Migration
+    public partial class OneForAll : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,12 +52,27 @@ namespace PracaInz.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Class",
+                columns: table => new
+                {
+                    ClassID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 5, nullable: true),
+                    Year = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Class", x => x.ClassID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employee",
                 columns: table => new
                 {
                     EmployeeID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    HireDate = table.Column<DateTime>(nullable: false)
+                    HireDate = table.Column<DateTime>(nullable: false),
+                    isTeacher = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,16 +80,17 @@ namespace PracaInz.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Student",
+                name: "Subject",
                 columns: table => new
                 {
-                    StudentID = table.Column<int>(nullable: false)
+                    SubjectID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GudrdianPhoneNumber = table.Column<string>(nullable: true)
+                    IsImportant = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Student", x => x.StudentID);
+                    table.PrimaryKey("PK_Subject", x => x.SubjectID);
                 });
 
             migrationBuilder.CreateTable(
@@ -184,6 +200,53 @@ namespace PracaInz.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Student",
+                columns: table => new
+                {
+                    StudentID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ClassID = table.Column<int>(nullable: true),
+                    GudrdianPhoneNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Student", x => x.StudentID);
+                    table.ForeignKey(
+                        name: "FK_Student_Class_ClassID",
+                        column: x => x.ClassID,
+                        principalTable: "Class",
+                        principalColumn: "ClassID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Course",
+                columns: table => new
+                {
+                    CourseID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    EmployeeID = table.Column<int>(nullable: false),
+                    FullName = table.Column<string>(nullable: true),
+                    SubjectID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Course", x => x.CourseID);
+                    table.ForeignKey(
+                        name: "FK_Course_Employee_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Course_Subject_SubjectID",
+                        column: x => x.SubjectID,
+                        principalTable: "Subject",
+                        principalColumn: "SubjectID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Person",
                 columns: table => new
                 {
@@ -218,6 +281,104 @@ namespace PracaInz.Migrations
                         principalTable: "Student",
                         principalColumn: "StudentID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Enrollment",
+                columns: table => new
+                {
+                    EnrollmentID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ClassID = table.Column<int>(nullable: false),
+                    CourseID = table.Column<int>(nullable: false),
+                    LongDescription = table.Column<string>(maxLength: 500, nullable: true),
+                    ShortDescription = table.Column<string>(maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Enrollment", x => x.EnrollmentID);
+                    table.ForeignKey(
+                        name: "FK_Enrollment_Class_ClassID",
+                        column: x => x.ClassID,
+                        principalTable: "Class",
+                        principalColumn: "ClassID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Enrollment_Course_CourseID",
+                        column: x => x.CourseID,
+                        principalTable: "Course",
+                        principalColumn: "CourseID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grade",
+                columns: table => new
+                {
+                    GradeID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CourseID = table.Column<int>(nullable: true),
+                    EmployeerID = table.Column<int>(nullable: true),
+                    StudentID = table.Column<int>(nullable: true),
+                    Value = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grade", x => x.GradeID);
+                    table.ForeignKey(
+                        name: "FK_Grade_Course_CourseID",
+                        column: x => x.CourseID,
+                        principalTable: "Course",
+                        principalColumn: "CourseID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Grade_Employee_EmployeerID",
+                        column: x => x.EmployeerID,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Grade_Student_StudentID",
+                        column: x => x.StudentID,
+                        principalTable: "Student",
+                        principalColumn: "StudentID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Presence",
+                columns: table => new
+                {
+                    PresenceID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CourseID = table.Column<int>(nullable: true),
+                    Data = table.Column<DateTime>(nullable: false),
+                    EmployeeID = table.Column<int>(nullable: true),
+                    Godzina = table.Column<DateTime>(nullable: false),
+                    IsPresent = table.Column<bool>(nullable: false),
+                    StudentID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Presence", x => x.PresenceID);
+                    table.ForeignKey(
+                        name: "FK_Presence_Course_CourseID",
+                        column: x => x.CourseID,
+                        principalTable: "Course",
+                        principalColumn: "CourseID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Presence_Employee_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Presence_Student_StudentID",
+                        column: x => x.StudentID,
+                        principalTable: "Student",
+                        principalColumn: "StudentID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -260,6 +421,42 @@ namespace PracaInz.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Course_EmployeeID",
+                table: "Course",
+                column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Course_SubjectID",
+                table: "Course",
+                column: "SubjectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Enrollment_ClassID",
+                table: "Enrollment",
+                column: "ClassID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Enrollment_CourseID",
+                table: "Enrollment",
+                column: "CourseID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grade_CourseID",
+                table: "Grade",
+                column: "CourseID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grade_EmployeerID",
+                table: "Grade",
+                column: "EmployeerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grade_StudentID",
+                table: "Grade",
+                column: "StudentID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Person_ApplicationUserID",
                 table: "Person",
                 column: "ApplicationUserID",
@@ -278,6 +475,26 @@ namespace PracaInz.Migrations
                 column: "StudentID",
                 unique: true,
                 filter: "[StudentID] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Presence_CourseID",
+                table: "Presence",
+                column: "CourseID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Presence_EmployeeID",
+                table: "Presence",
+                column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Presence_StudentID",
+                table: "Presence",
+                column: "StudentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_ClassID",
+                table: "Student",
+                column: "ClassID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -298,7 +515,16 @@ namespace PracaInz.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Enrollment");
+
+            migrationBuilder.DropTable(
+                name: "Grade");
+
+            migrationBuilder.DropTable(
                 name: "Person");
+
+            migrationBuilder.DropTable(
+                name: "Presence");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -307,10 +533,19 @@ namespace PracaInz.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "Course");
 
             migrationBuilder.DropTable(
                 name: "Student");
+
+            migrationBuilder.DropTable(
+                name: "Employee");
+
+            migrationBuilder.DropTable(
+                name: "Subject");
+
+            migrationBuilder.DropTable(
+                name: "Class");
         }
     }
 }

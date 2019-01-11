@@ -1,0 +1,44 @@
+﻿@model List<Presence>
+@{
+    ViewData["Title"] = "Karta obecności";
+}
+
+<h2>@ViewData["Title"]   @DateTime.Now.ToShortDateString()</h2>
+
+
+<form action="SavePresence" method="post">
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => @Model[0].Employee)</th>
+                <th>@Html.DisplayNameFor(m => @Model[0].Student)</th>
+                <th>@Html.DisplayNameFor(m => @Model[0].Course)</th>
+                <th>@Html.DisplayNameFor(m => Model[0].IsPresent)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int i=0; i<Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].Employee.Person.FullName</td>
+                    <td>@Model[i].Student.Person.FullName</td>
+                    <td>@Model[i].Course.FullName</td>
+                    <td>
+                        <input type="hidden" asp-for="@Model[i].CourseID" />
+                        <input type="hidden" asp-for="@Model[i].EmployeeID" />
+                        <input type="hidden" asp-for="@Model[i].StudentID" />
+                        <input type="hidden" asp-for="@Model[i].Data" />
+                        <input type="hidden" asp-for="@Model[i].Godzina" />
+
+                        <input asp-for="@Model[i].IsPresent"/>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <input type="submit" value="Zapisz" class="btn btn-primary" />
+    </div>
+</form>

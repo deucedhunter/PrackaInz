@@ -206,8 +206,7 @@ namespace PracaInz.Migrations
 
                     b.HasKey("CourseID");
 
-                    b.HasIndex("EmployeeID")
-                        .IsUnique();
+                    b.HasIndex("EmployeeID");
 
                     b.HasIndex("SubjectID");
 

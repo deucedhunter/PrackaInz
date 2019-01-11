@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PracaInz.Data;
 using PracaInz.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,9 +23,13 @@ namespace PracaInz.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Coursees
+                .Include(c => c.Enrollment)
                 .Include(c => c.Employee)
                     .ThenInclude(e => e.Person)
                 .Include(c => c.Subject);
+
+
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -179,6 +185,57 @@ namespace PracaInz.Controllers
         private bool CourseExists(int id)
         {
             return _context.Coursees.Any(e => e.CourseID == id);
+        }
+
+        public async Task<IActionResult> CheckPresence(int? CourseID, int? ClassID)
+        {
+            var classFromDB = await _context.Classes.Include(c => c.Students).SingleOrDefaultAsync(c => c.ClassID == ClassID);
+
+            if (classFromDB == null)
+            {
+                return NotFound();
+            }
+            var course = await _context.Coursees.Include(c => c.Employee).SingleOrDefaultAsync(c => c.CourseID == CourseID);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var students = classFromDB.Students.ToList();
+            List<Presence> presences = new List<Presence>();
+            foreach (var student in students)
+            {
+
+                presences.Add(
+                    new Presence
+                    {
+                        StudentID = student.StudentID,
+                        Student = _context.Students.Include(e => e.Person).SingleOrDefault(s => s.StudentID == student.StudentID),
+                        Data = DateTime.Now.Date,
+                        IsPresent = false,
+                        Godzina = DateTime.Now.ToLocalTime(),
+                        EmployeeID = course.EmployeeID,
+                        Employee = _context.Employees.Include(e => e.Person).SingleOrDefault(e => e.EmployeeID == course.EmployeeID),
+                        CourseID = course.CourseID,
+                        Course = course
+                    });
+
+            }
+
+            return View("Presence", presences);
+        }
+
+        [HttpPost]
+        public IActionResult SavePresence(List<Presence> presences)
+        {
+            foreach (var presence in presences)
+            {
+                _context.Presence.Add(presence);
+            }
+
+            _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 }

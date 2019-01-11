@@ -47,6 +47,11 @@ namespace PracaInz.Data
                 .WithOne(p => p.Student)
                 .IsRequired(false);
 
+
+            builder.Entity<Course>()
+                .HasIndex(c => c.EmployeeID)
+                .IsUnique(false);
+
             builder.Entity<Employee>()
                 .HasOne(s => s.Person)
                 .WithOne(p => p.Employee)
@@ -57,7 +62,5 @@ namespace PracaInz.Data
                 .WithOne(b => b.Employee)
                 .HasForeignKey<Course>(b => b.EmployeeID);
         }
-
-
     }
 }
