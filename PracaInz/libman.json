@@ -3,8 +3,24 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "font-awesome@4.7.0",
-      "destination": "wwwroot/lib/font-awesome/"
+      "library": "fullcalendar@3.10.0",
+      "destination": "wwwroot/lib/fullcalendar/",
+      "files": [
+        "fullcalendar.min.js",
+        "locale/pl.js",
+        "fullcalendar.min.css",
+        "fullcalendar.js",
+        "fullcalendar.css",
+        "fullcalendar.print.css",
+        "fullcalendar.print.min.css",
+        "locale-all.js",
+        "gcal.min.js",
+        "gcal.js"
+      ]
+    },
+    {
+      "library": "moment.js@2.23.0",
+      "destination": "wwwroot/lib/moment.js/"
     }
   ]
 }

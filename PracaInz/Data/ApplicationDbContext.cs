@@ -21,11 +21,14 @@ namespace PracaInz.Data
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Presence> Presence { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Event> Events { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<EventClass>().HasKey(ec => new { ec.ClassID, ec.EventID });
 
             builder.Entity<Student>().ToTable("Student");
             builder.Entity<Employee>().ToTable("Employee");
@@ -36,6 +39,7 @@ namespace PracaInz.Data
             builder.Entity<Enrollment>().ToTable("Enrollment");
             builder.Entity<Grade>().ToTable("Grade");
             builder.Entity<Presence>().ToTable("Presence");
+            builder.Entity<Event>().ToTable("Event");
 
             builder.Entity<ApplicationUser>()
                 .HasOne(p => p.Person)

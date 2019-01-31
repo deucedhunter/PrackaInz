@@ -1,0 +1,118 @@
+﻿@model NewEventVM
+@{
+    ViewData["Title"] = "Kalendarz";
+}
+
+<h2>@ViewData["Title"]</h2>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="~/lib/jqueryUI/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "Calendar/GetEvents",
+            dataType: "json",
+            success: function(data) {
+                $('#calendar').fullCalendar({
+                    themeSystem: 'jquery-ui',
+                    defaultDate: '@DateTime.Today.ToString("yyyy-MM-dd")',
+                    eventLimit: true, // allow "more" link when too many events
+                    firstDay: 1,
+                    events: 'Calendar/GetEvents'
+                });
+            }
+        });
+    });
+    var dd = "";
+    var dataString = "";
+</script>
+
+
+
+<div class="row">
+    <div text-center">
+        <div id='calendar'></div>
+        <button id="previous" class="col-md-4 text-center btn btn-primary"><</button>
+        <button id="today" class="col-md-4 text-center btn btn-success">O</button>
+        <button id="next" class="col-md-4 text-center btn btn-primary">></button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#next").click(function () {
+
+        $('#calendar').fullCalendar('next');
+    });
+    $("#previous").click(function () {
+        $('#calendar').fullCalendar('prev');
+    });
+    $("#today").click(function () {
+        $('#calendar').fullCalendar('today');
+    });
+    $('#calendar').on("click",
+        "*",
+        function () {
+
+
+            dd = $(this).data("date");
+            dataString = dd.substring(0, 10);
+            var d = new Date(dataString);
+
+            console.log("dd: " + dd + ", type: " + typeof (dd));
+            console.log("d: " + d + ", type: " + typeof (d));
+            console.log("dataString: " + dataString + ", type: " + typeof (dataString));
+
+
+            document.getElementById("eventDate").setAttribute("value", dataString.toString());
+            $("#exampleModal").modal();
+
+        });
+</script>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nowe Wydażenie</h5>
+            </div>
+            <form asp-action="Create" method="post">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Event.Date">Data</label>
+                        <input asp-for="@Model.Event.Date" id="eventDate" type="date" class="form-control" />
+                        <span asp-validation-for="@Model.Event.Date"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Event.Time">Godzina</label>
+                        <input asp-for="@Model.Event.Time" value="08:00" class="form-control" />
+                        <span asp-validation-for="@Model.Event.Time"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Event.Description">Opis</label>
+                        <textarea asp-for="@Model.Event.Description" class="form-control"></textarea>
+                        <span asp-validation-for="@Model.Event.Description"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Employees"></label>
+                        <select asp-for="Event.AuthorID" class="form-control" asp-items="ViewBag.EmplyeesList"></select>
+                        <span asp-validation-for="@Model.Employees"></span>
+                    </div>
+
+                    @*
+                        <div class="form-group">
+                            <label asp-for="@Model.Classes">Opis</label>
+                            <textarea asp-for="Event." class="form-control"></textarea>
+                            <span asp-validation-for="@Model.Classes"></span>
+                        </div>
+                    *@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                    <input type="submit" class="btn btn-primary" Value="Zapisz" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -231,11 +231,11 @@ namespace PracaInz.Controllers
         {
             foreach (var presence in presences)
             {
-                _context.Presence.Add(presence);
+                _context.Add(presence);
             }
 
-            _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Presences");
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PracaInz.Models
 {
@@ -37,7 +37,7 @@ namespace PracaInz.Models
         public int? StudentID { get; set; }
         public virtual Student Student { get; set; }
 
-
+        public IEnumerable<Event> Events { get; set; }
 
         public int? EmployeeID { get; set; }
         public virtual Employee Employee { get; set; }

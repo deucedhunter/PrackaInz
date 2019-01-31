@@ -252,6 +252,39 @@ namespace PracaInz.Migrations
                     b.ToTable("Enrollment");
                 });
 
+            modelBuilder.Entity("PracaInz.Models.Event", b =>
+                {
+                    b.Property<int>("EventID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AuthorID");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("Time");
+
+                    b.HasKey("EventID");
+
+                    b.HasIndex("AuthorID");
+
+                    b.ToTable("Event");
+                });
+
+            modelBuilder.Entity("PracaInz.Models.EventClass", b =>
+                {
+                    b.Property<int>("ClassID");
+
+                    b.Property<int>("EventID");
+
+                    b.HasKey("ClassID", "EventID");
+
+                    b.HasIndex("EventID");
+
+                    b.ToTable("EventClass");
+                });
+
             modelBuilder.Entity("PracaInz.Models.Grade", b =>
                 {
                     b.Property<int>("GradeID")
@@ -442,6 +475,27 @@ namespace PracaInz.Migrations
                     b.HasOne("PracaInz.Models.Course", "Course")
                         .WithOne("Enrollment")
                         .HasForeignKey("PracaInz.Models.Enrollment", "CourseID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PracaInz.Models.Event", b =>
+                {
+                    b.HasOne("PracaInz.Models.Person", "Author")
+                        .WithMany("Events")
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PracaInz.Models.EventClass", b =>
+                {
+                    b.HasOne("PracaInz.Models.Class", "Class")
+                        .WithMany("EventClass")
+                        .HasForeignKey("ClassID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PracaInz.Models.Event", "Event")
+                        .WithMany("EventClass")
+                        .HasForeignKey("EventID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

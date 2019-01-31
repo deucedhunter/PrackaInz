@@ -17,6 +17,8 @@ namespace PracaInz.Models
         public IEnumerable<Student> Students { get; set; }
         public IEnumerable<Enrollment> Enrollments { get; set; }
 
+        public IEnumerable<EventClass> EventClass { get; set; }
+
         [Display(Name = "Nazwa")]
         public string FullName
         {
